@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DeepFields Report</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .slider-section, .image-section, .metrics-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 30px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .image-box {
+      width: 200px;
+      height: 200px;
+      background-color: #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      border: 1px solid #888;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .metrics-section table {
+      border-collapse: collapse;
+      width: 300px;
+    }
+
+    .metrics-section th, .metrics-section td {
+      border: 1px solid #000;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>DeepFields Report</h1>
+  <div class="subtitle">STD + RGB + Entropy (TopDown)</div>
+
+  <div class="slider-section">
+    <div class="image-box" id="single-img">Image Slide</div>
+  </div>
+  <div class="nav-buttons">
+    <button onclick="prevSlide()">Prev</button>
+    <button onclick="nextSlide()">Next</button>
+  </div>
+
+  <div class="image-section">
+    <div class="image-box">STD</div>
+    <div class="image-box">RGB</div>
+    <div class="image-box">Entropy</div>
+  </div>
+
+  <div class="nav-buttons">
+    <button onclick="prevLayer()">Prev Layer</button>
+    <button onclick="nextLayer()">Next Layer</button>
+  </div>
+
+  <div class="metrics-section">
+    <table>
+      <tr><th>Leaves Acc</th><td>-- %</td></tr>
+      <tr><th>Void Acc</th><td>-- %</td></tr>
+      <tr><th>Accuracy</th><td>-- %</td></tr>
+    </table>
+  </div>
+
+  <script>
+    let currentSlide = 0;
+
+    function prevSlide() {
+      currentSlide = Math.max(0, currentSlide - 1);
+      document.getElementById('single-img').innerText = `Slide ${currentSlide}`;
+    }
+
+    function nextSlide() {
+      currentSlide++;
+      document.getElementById('single-img').innerText = `Slide ${currentSlide}`;
+    }
+
+    function prevLayer() {
+      alert('Previous layer');
+    }
+
+    function nextLayer() {
+      alert('Next layer');
+    }
+  </script>
+</body>
+</html>
