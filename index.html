@@ -12,8 +12,11 @@
       background-color: #f9f9f9;
       padding: 20px;
     }
-    h4, h5 {
+    h4 {
       text-align: center;
+    }
+    h5{
+        text-align: left;
     }
     .image-box {
       width: 100%;
@@ -47,9 +50,8 @@
 
     <div class="card-panel">
       <h6 class="center">Single Image (Slider)</h6>
-      <div class="image-box">
-        <img id="slider-img" src="images/single/frame0.png" alt="Slide Image">
-      </div>
+      <div id="slider-container" class="scroll-slider"></div>
+
       <div class="nav-buttons">
         <a class="waves-effect waves-light btn-small" onclick="prevSlide()">Prev</a>
         <a class="waves-effect waves-light btn-small" onclick="nextSlide()">Next</a>
@@ -98,35 +100,41 @@
       </table>
     </div>
   </div>
-
   <script>
-    let slideIndex = 0;
-    const totalSlides = 100;  // Adjust based on your image count
-
-    function updateImages() {
-      document.getElementById('slider-img').src = `images/single/frame${slideIndex}.png`;
-      document.getElementById('std-img').src = `images/std/frame${slideIndex}.png`;
-      document.getElementById('rgb-img').src = `images/rgb/frame${slideIndex}.png`;
-      document.getElementById('entropy-img').src = `images/entropy/frame${slideIndex}.png`;
+    function loadSliderImages() {
+      const container = document.getElementById('slider-container');
+      for (let i = 0; i < 100; i++) {
+        const padded = i.toString().padStart(3, '0');
+        img.src = `images/single/${i}.png`;
+        img.alt = `Slide ${i}`;
+        img.title = `Slide ${i}`;
+        container.appendChild(img);
+      }
     }
 
-    function prevSlide() {
-      slideIndex = Math.max(0, slideIndex - 1);
-      updateImages();
-    }
+    let currentLayerIndex = 0;
 
-    function nextSlide() {
-      slideIndex = Math.min(totalSlides - 1, slideIndex + 1);
-      updateImages();
-    }
+function updateLayerImages() {
+  document.getElementById('std-img').src = `images/std/${currentLayerIndex}.png`;
+  document.getElementById('rgb-img').src = `images/rgb/${currentLayerIndex}.png`;
+  document.getElementById('entropy-img').src = `images/entropy/${currentLayerIndex}.png`;
+}
 
-    function prevLayer() {
-      alert('Previous layer action');
-    }
+function prevLayer() {
+  if (currentLayerIndex > 0) {
+    currentLayerIndex--;
+    updateLayerImages();
+  }
+}
 
     function nextLayer() {
-      alert('Next layer action');
-    }
+  if (currentLayerIndex < 99) {
+    currentLayerIndex++;
+    updateLayerImages();
+  }
+}
+
+    window.onload = loadSliderImages;
   </script>
   <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/js/materialize.min.js"></script>
 </body>
