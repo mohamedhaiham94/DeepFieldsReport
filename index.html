@@ -4,112 +4,130 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DeepFields Report</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/css/materialize.min.css" rel="stylesheet">
   <style>
     body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f4f4f4;
+      font-family: 'Roboto', sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
     }
-
-    h1 {
+    h4, h5 {
       text-align: center;
     }
-
-    .subtitle {
-      text-align: center;
-      margin-bottom: 30px;
-      font-weight: bold;
-    }
-
-    .slider-section, .image-section, .metrics-section {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 30px;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
     .image-box {
-      width: 200px;
+      width: 100%;
       height: 200px;
-      background-color: #ccc;
+      background-color: #e0e0e0;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-weight: bold;
-      border: 1px solid #888;
+      border-radius: 8px;
+      overflow: hidden;
     }
-
+    .image-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
     .nav-buttons {
       display: flex;
-      gap: 10px;
       justify-content: center;
+      margin: 15px 0;
     }
-
-    .metrics-section table {
-      border-collapse: collapse;
-      width: 300px;
-    }
-
-    .metrics-section th, .metrics-section td {
-      border: 1px solid #000;
-      padding: 10px;
+    .metrics-table td, .metrics-table th {
       text-align: center;
     }
   </style>
 </head>
 <body>
-  <h1>DeepFields Report</h1>
-  <div class="subtitle">STD + RGB + Entropy (TopDown)</div>
+  <div class="container">
+    <h4>DeepFields Report</h4>
+    <h5 class="grey-text">STD + RGB + Entropy (TopDown)</h5>
 
-  <div class="slider-section">
-    <div class="image-box" id="single-img">Image Slide</div>
-  </div>
-  <div class="nav-buttons">
-    <button onclick="prevSlide()">Prev</button>
-    <button onclick="nextSlide()">Next</button>
-  </div>
+    <div class="card-panel">
+      <h6 class="center">Single Image (Slider)</h6>
+      <div class="image-box">
+        <img id="slider-img" src="images/single/frame0.png" alt="Slide Image">
+      </div>
+      <div class="nav-buttons">
+        <a class="waves-effect waves-light btn-small" onclick="prevSlide()">Prev</a>
+        <a class="waves-effect waves-light btn-small" onclick="nextSlide()">Next</a>
+      </div>
+    </div>
 
-  <div class="image-section">
-    <div class="image-box">STD</div>
-    <div class="image-box">RGB</div>
-    <div class="image-box">Entropy</div>
-  </div>
+    <div class="row">
+      <div class="col s12 m4">
+        <h6 class="center">STD</h6>
+        <div class="image-box">
+          <img id="std-img" src="images/std/frame0.png" alt="STD">
+        </div>
+      </div>
+      <div class="col s12 m4">
+        <h6 class="center">RGB</h6>
+        <div class="image-box">
+          <img id="rgb-img" src="images/rgb/frame0.png" alt="RGB">
+        </div>
+      </div>
+      <div class="col s12 m4">
+        <h6 class="center">Entropy</h6>
+        <div class="image-box">
+          <img id="entropy-img" src="images/entropy/frame0.png" alt="Entropy">
+        </div>
+      </div>
+    </div>
 
-  <div class="nav-buttons">
-    <button onclick="prevLayer()">Prev Layer</button>
-    <button onclick="nextLayer()">Next Layer</button>
-  </div>
+    <div class="nav-buttons">
+      <a class="waves-effect waves-light btn-small" onclick="prevLayer()">Prev Layer</a>
+      <a class="waves-effect waves-light btn-small" onclick="nextLayer()">Next Layer</a>
+    </div>
 
-  <div class="metrics-section">
-    <table>
-      <tr><th>Leaves Acc</th><td>-- %</td></tr>
-      <tr><th>Void Acc</th><td>-- %</td></tr>
-      <tr><th>Accuracy</th><td>-- %</td></tr>
-    </table>
+    <div class="card-panel">
+      <table class="striped centered metrics-table">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Leaves Acc</td><td id="leaves-acc">-- %</td></tr>
+          <tr><td>Void Acc</td><td id="void-acc">-- %</td></tr>
+          <tr><td>Accuracy</td><td id="accuracy">-- %</td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <script>
-    let currentSlide = 0;
+    let slideIndex = 0;
+    const totalSlides = 100;  // Adjust based on your image count
+
+    function updateImages() {
+      document.getElementById('slider-img').src = `images/single/frame${slideIndex}.png`;
+      document.getElementById('std-img').src = `images/std/frame${slideIndex}.png`;
+      document.getElementById('rgb-img').src = `images/rgb/frame${slideIndex}.png`;
+      document.getElementById('entropy-img').src = `images/entropy/frame${slideIndex}.png`;
+    }
 
     function prevSlide() {
-      currentSlide = Math.max(0, currentSlide - 1);
-      document.getElementById('single-img').innerText = `Slide ${currentSlide}`;
+      slideIndex = Math.max(0, slideIndex - 1);
+      updateImages();
     }
 
     function nextSlide() {
-      currentSlide++;
-      document.getElementById('single-img').innerText = `Slide ${currentSlide}`;
+      slideIndex = Math.min(totalSlides - 1, slideIndex + 1);
+      updateImages();
     }
 
     function prevLayer() {
-      alert('Previous layer');
+      alert('Previous layer action');
     }
 
     function nextLayer() {
-      alert('Next layer');
+      alert('Next layer action');
     }
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@materializecss/materialize@1.0.0/dist/js/materialize.min.js"></script>
 </body>
 </html>
